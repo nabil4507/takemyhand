@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Gift Card</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(270deg, #ffd6e8, #ffe6e6, #fff0f5);
+    background-size: 600% 600%;
+    animation: bgMove 12s ease infinite;
+}
+
+@keyframes bgMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.card-container {
+    width: 600px;
+    height: 700px;
+    perspective: 1000px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 0 25px rgba(255,105,180,0.6),
+        0 0 60px rgba(255,182,193,0.4);
+}
+
+.cover {
+    position: absolute;
+    inset: 0;
+    background: #ff6699;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    transform-origin: left;
+    transition: transform 0.6s ease;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.card.open .cover {
+    transform: rotateY(-120deg);
+}
+
+/* Pages */
+.page {
+    position: absolute;
+    inset: 0;
+    padding: 80px 70px;
+    text-align: center;
+    font-size: 22px;
+    display: none;
+}
+
+.page.show {
+    display: block;
+}
+
+p {
+    max-width: 320px;
+    margin: 0 auto 16px;
+    line-height: 1.2;
+}
+
+/* Buttons */
+button {
+    padding: 12px 28px;
+    background-color: #ff6699;
+    color: white;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* First page images */
+.image-top-left {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 100px;
+    border-radius: 15px;
+}
+
+.image-bottom-right {
+    position: absolute;
+    bottom: 50px;
+    right: 30px;
+    width: 100px;
+    border-radius: 15px;
+}
+
+
+.confess-img {
+    width: 240px;
+    border-radius: 15px;
+    margin-top: -80px;
+}
+
+
+/* Choice buttons */
+.choice-container {
+    margin-top: 30px;
+    position: relative;
+    height: 80px;
+}
+
+#noBtn {
+    position: absolute;
+    left: 150px;
+    top: 0;
+}
+
+/* Hearts */
+.heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 24px;
+    animation: floatUp 6s linear forwards;
+    pointer-events: none;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bg-music" loop>
+    <source src="Take my hand, take my whole life too. (can't help falling in love).mp3" type="audio/mpeg">
+</audio>
+
+<div class="card-container">
+<div class="card" id="card">
+
+<div class="cover" id="cover">click here sayang &lt;3</div>
+
+<!-- PAGE 1 -->
+<div class="page show" id="page1">
+    <img src="self-dispersion test 🙂🫶🤧.jpg" class="image-top-left">
+    <img src="download (3).jpg" class="image-bottom-right">
+
+    <p>Before I start, I just want to take a moment to be thankful for the time we’ve spent together.</p> 
+    <p>Getting to know you has been truly special, and there’s so much about you that I find amaze.</p> 
+    <p>Your voice brings me calm, your presence gives me strength, 
+    and your kindness of sincere is something rare to find these days.</p> 
+    <p>Your spirit is one of the most beautiful a person can have.</p> 
+    <p>I believe people like you, like us are rare</p> 
+    <P>So allow me to propose this to you</P>
+    <button id="nextBtn">Next</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+    <img src="download.jpg" class="confess-img">
+    <p>🎁 MY CONFESS 🎁</p>
+    <p>I know this is still early, and there’s so much more to come like ocean waves rushing to the shore, 
+        I hope to hold your hand and walk through the rest of this journey with you.</p> 
+    <p>I may not be much, but please allow me to love you aloud, to love you in ways you may have never heard, 
+        and perhaps never felt before.</p>
+
+    <div class="choice-container">
+        <button id="yesBtn">YES 💖</button>
+        <button id="noBtn">NO 🙈</button>
+    </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+    <p>💞 You made me the happiest person 💞</p>
+    <p>Thank you for choosing us.</p>
+</div>
+
+</div>
+</div>
+
+<script>
+const card = document.getElementById("card");
+const cover = document.getElementById("cover");
+const music = document.getElementById("bg-music");
+
+const page1 = document.getElementById("page1");
+const page2 = document.getElementById("page2");
+const page3 = document.getElementById("page3");
+
+const nextBtn = document.getElementById("nextBtn");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+/* Open card */
+cover.addEventListener("click", e => {
+    e.stopPropagation();
+    card.classList.add("open");
+    music.volume = 0.4;
+    music.play();
+});
+
+/* Page 1 → 2 */
+nextBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    page1.classList.remove("show");
+    page2.classList.add("show");
+});
+
+/* YES → Final page */
+yesBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    page2.classList.remove("show");
+    page3.classList.add("show");
+});
+
+/* NO runs away */
+noBtn.addEventListener("mouseenter", () => {
+    const x = Math.random() * 260;
+    const y = Math.random() * 40;
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+/* Floating hearts */
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}, 700);
+</script>
+
+</body>
+</html>
